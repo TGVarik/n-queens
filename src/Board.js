@@ -24,6 +24,13 @@
       }, this);
     },
 
+    // adding a columns method for convenience and efficiency
+    // returns pivoted rows matrix
+
+    cols: function(){
+      return _.zip.apply(null, this.rows());
+    },
+
     togglePiece: function(rowIndex, colIndex) {
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
