@@ -16,9 +16,22 @@ describe('solvers', function() {
 
   describe('countNRooksSolutions()', function() {
 
-    it('finds the number of valid solutions for n of 1-8', function() {
+    xit('finds the number of valid solutions for n of 1-8', function() {
       _.range(1, 9).map(function(n) {
         var solutionCount = countNRooksSolutions(n);
+        var expectedSolutionCount = [undefined, 1, 2, 6, 24, 120, 720, 5040, 40320][n];
+
+        expect(solutionCount).to.be.equal(expectedSolutionCount);
+      });
+    });
+
+  });
+
+  describe('countNRooksSolutionsFaster()', function() {
+
+    it('finds the number of valid solutions for n of 1-8', function() {
+      _.range(1, 9).map(function(n) {
+        var solutionCount = countNRooksSolutionsFaster(n);
         var expectedSolutionCount = [undefined, 1, 2, 6, 24, 120, 720, 5040, 40320][n];
 
         expect(solutionCount).to.be.equal(expectedSolutionCount);
@@ -42,7 +55,7 @@ describe('solvers', function() {
 
   describe('countNQueensSolutions()', function() {
 
-    it('finds the number of valid solutions for n of 1-8', function() {
+    xit('finds the number of valid solutions for n of 1-8', function() {
       _.range(1, 9).map(function(n) {
         var solutionCount = countNQueensSolutions(n);
         var expectedSolutionCount = [undefined, 1, 0, 0, 2, 10, 4, 40, 92][n];
@@ -52,5 +65,19 @@ describe('solvers', function() {
     });
 
   });
+
+  describe('countNQueensSolutionsFaster()', function() {
+    it('finds the number of valid solutions for n of 1-8', function() {
+      _.range(1, 9).map(function(n) {
+        var solutionCount = window.countNQueensSolutionsFaster(n);
+        var expectedSolutionCount = [undefined, 1, 0, 0, 2, 10, 4, 40, 92][n];
+
+        expect(solutionCount).to.be.equal(expectedSolutionCount);
+      });
+    });
+
+  });
+
+
 
 });
