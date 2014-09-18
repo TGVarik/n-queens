@@ -31,6 +31,14 @@
       return _.zip.apply(null, this.rows());
     },
 
+    numPieces: function(){
+      return _.reduce(this.rows(), function(memo, row){
+        return _.reduce(row, function(memo, cell){
+          return memo + cell;
+        }, 0);
+      }, 0);
+    },
+
     togglePiece: function(rowIndex, colIndex) {
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
