@@ -79,12 +79,18 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      return this.rows()[rowIndex].reduce(function(sum, cell){
+        return sum + cell;
+      }, 0) > 1;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      return this.rows().reduce(function(res, row){
+        return res || row.reduce(function(sum, cell){
+          return sum + cell;
+        }, 0) > 1;
+      }, false);
     },
 
 
@@ -94,12 +100,19 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      return _.zip(this.rows())[colIndex].reduce(function(sum, cell){
+        return sum + cell[0];
+      }, 0) > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      return _.zip(this.rows()).reduce(function(res, col){
+        console.log(col);
+        return res || col[0].reduce(function(sum, cell){
+          return sum + cell[0];
+        }, 0) > 1;
+      }, false);
     },
 
 
