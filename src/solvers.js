@@ -135,14 +135,13 @@ window.countNQueensSolutions = function(n) {
 window.countNQueensSolutionsFaster = function(n){
   var count = 0;
   var all = Math.pow(2,n)-1;
-
   var test = function(ld, cols, rd){
     if (cols === all){count++; return;} //EXIT CASE:  if all columns are full, increment`
-    var poss = ~(ld | cols | rd) & all; //determine possible placements on this row
+    var poss = ~(ld | cols | rd) & all ; //determine possible placements on this row
 
     while (poss){ //while possible placements this row,
       var bit = poss & (~poss + 1);//place queen in a possibility
-      poss -= bit;//change possibility to test for next loop iteration
+      poss -= bit;//change possibility to test for next loop iterationvb
       test((ld|bit)<<1, cols|bit, (rd|bit)>>1);//recurse to next row passing existing masks
     }
   };
@@ -150,6 +149,53 @@ window.countNQueensSolutionsFaster = function(n){
   console.log('There are ' + count +' solutions to ' + n +'-Queens problem.');
   return count;
 };
+
+
+window.countNQueensSolutionsFasterWithSymmetry = function(n){
+  var count = 0;
+  var all = Math.pow(2,n)-1;
+  var test = function(ld, cols, rd){
+    if (cols === all){count++; return;} //EXIT CASE:  if all columns are full, increment`
+    var poss = ~(ld | cols | rd) & (cols ? all : all & (all >> Math.floor(n/2)) ); //determine possible placements on this row
+
+    while (poss){ //while possible placements this row,
+      var bit = poss & (~poss + 1);//place queen in a possibility
+      poss -= bit;//change possibility to test for next loop iterationvb
+      if ((!poss) && (!cols) && (n & 1)){
+        // !poss = last column
+        // !cols = first row
+        // (n & 1) = odd n
+        // we're about to test the middle position in the first row of an odd-n board
+        // we want to double everything before, but nothing after this point
+        count *= 2;
+      }
+      test((ld|bit)<<1, cols|bit, (rd|bit)>>1);//recurse to next row passing existing masks
+      if ((!poss) && (!cols) && (!(n & 1))){
+        // !poss = last column
+        // !cols = first row
+        // !(n & 1) = even n
+        // we're done testing half of the first row of an even-n board
+        // we want to stop testing here and double our result
+        count *= 2;
+      }
+    }
+  };
+  test(0,0,0);
+  console.log('There are ' + count +' solutions to ' + n +'-Queens problem.');
+  return count;
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 window.countNRooksSolutionsFaster = function(n){
   var count = 0;
