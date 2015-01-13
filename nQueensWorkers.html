@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <script src="lib/jquery-1.8.3.js"></script>
+  <meta charset="UTF-8">
+  <title>n-Queens with Workers</title>
+  <script>
+    var highestNRunning = 0;
+    var workers = 0;
+
+    var enqueueNewWorker = function(){
+      if (highestNRunning < 19) {
+        if (workers < navigator.hardwareConcurrency) {
+          var worker = new Worker('src/nQueensWorker.js');
+          workers++;
+          highestNRunning++;
+          worker.addEventListener('message', function (e) {
+            var time = performance.now() - e.data.start;
+            var row = $('<tr />');
+            row.append($('<td />').text(e.data.n));
+            row.append($('<td />').text(e.result));
+            row.append($('<td />').text(time));
+            $('.results').append(row);
+          });
+          worker.postMessage({n: highestNRunning, start: performance.now()});
+        }
+      } else {
+        clearInterval(intervalId);
+      }
+    };
+
+    var intervalId = setInterval(enqueueNewWorker, 1);
+
+  </script>
+</head>
+<body>
+<table class="results"></table>
+</body>
+</html>
